@@ -35,7 +35,10 @@ source "amazon-ebs" "nomad" {
 
 build {
     sources = ["source.amazon-ebs.nomad"]
-
+    provisioner "file" {
+        source = "./tf-packer.pub"
+        destination = "/tmp/tf-packer.pub"
+    }
     provisioner "shell" {
         environment_vars = [
             "USERNAME=${var.docker_username}",
@@ -49,9 +52,5 @@ build {
     }
     provisioner "shell" {
         script = "./move-daemon.sh"
-    }
-    provisioner "file" {
-        source = "./tf-packer.pub"
-        destination = "/tmp/tf-packer.pub"
     }
 }
